@@ -1,0 +1,30 @@
+Final Project Hive Code
+Question NO:1 
+Highest Avg PM value
+select avg(PM25) as pm, city from pm25_table group by city;
+ 
+ 
+ 
+2 Question No: 2
+Air Quality Distribution (Part1)
+
+create table level(level int, day_of_month int,city string);
+insert overwrite table level
+select case
+when(avgaqi>=0 and avgaqi<=50) then 1
+when(avgaqi>50 and avgaqi<=100) then 2
+when(avgaqi>100 and avgaqi<200) then 3
+when(avgaqi>=200 and avgaqi<300) then 4
+when(avgaqi>=300 and avgaqi<=350) then 5
+else 6 end, date_pm,city from
+(select avg(AQI) as avgaqi,date_pm,city  from pm25_table
+where city in ('成都','上海','北京') and month = 2 and year = 2019
+group by city,date_pm) level;
+ 
+
+
+Question No: 2
+Air Quality Distribution (Part2)
+
+select city,level,count(*) from level group by level,city;
+ 
